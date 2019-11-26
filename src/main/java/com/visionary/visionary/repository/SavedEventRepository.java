@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface SavedEventRepository extends CrudRepository<SavedEvent, UUID>, CustomSavedEventRepository {
     long countByEventId(UUID userId);
 
-    Optional<SavedEvent> findByUserIdAndEventId(UUID userId, UUID eventId);
+    Optional<SavedEvent> findBycreatedByAndEventId(UUID userId, UUID eventId);
     List<SavedEvent> findByEventId(UUID eventId);
 }

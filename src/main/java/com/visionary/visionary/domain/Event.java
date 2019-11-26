@@ -9,7 +9,7 @@ public class Event extends Identifiable{
     private String title;
     private String description;
     @OneToOne
-    @Column(name = "category_id")
+    @JoinColumn(name = "category_id")
     private Category categoryId;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_time")
@@ -17,8 +17,8 @@ public class Event extends Identifiable{
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_time")
     private Date endTime;
-    @OneToMany
-    @Column(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private Long savedCount;
     @Embedded

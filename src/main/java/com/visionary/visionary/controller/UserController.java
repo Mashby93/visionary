@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -21,11 +22,13 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/private")
     public void updateUser(PrivateUserProfileDto privateUserProfileDto) {
         userService.updateUser(userMapper.toUser(privateUserProfileDto));
     }
+
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{userId}/verify")

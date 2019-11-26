@@ -4,9 +4,11 @@ import com.visionary.visionary.domain.Category;
 import com.visionary.visionary.model.CategoryDto;
 import com.visionary.visionary.service.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class CategoryMapper {
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;

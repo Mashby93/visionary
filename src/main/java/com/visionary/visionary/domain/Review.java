@@ -1,12 +1,13 @@
 package com.visionary.visionary.domain;
 
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import java.util.UUID;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import javax.persistence.*;
+import java.util.UUID;
+@Entity
 public class Review extends Identifiable{
-    @OneToMany
-    @Column(name = "event_id")
+    @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event eventId;
     private Double rating;
     private String review;

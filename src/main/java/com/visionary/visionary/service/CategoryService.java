@@ -3,12 +3,14 @@ package com.visionary.visionary.service;
 import com.visionary.visionary.domain.Category;
 import com.visionary.visionary.repository.CategoryRepository;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 

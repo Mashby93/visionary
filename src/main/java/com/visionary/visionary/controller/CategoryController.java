@@ -12,7 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-@RestController("category")
+@RestController()
+@RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
@@ -24,18 +25,12 @@ public class CategoryController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/v1/")
+    @GetMapping("")
     public List<CategoryDto> getCategorys() {
         List<CategoryDto> converted = new LinkedList<>();
         categoryService.getAll().iterator()
                 .forEachRemaining(category -> converted.add(categoryMapper.toDto(category)));
         return converted;
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{categoryId}")
-    public CategoryDto getCategory(@PathVariable("categoryId") UUID id) {
-        return categoryMapper.toDto(categoryService.getById(id));
     }
 
     @ResponseStatus(HttpStatus.OK)

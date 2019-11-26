@@ -1,16 +1,18 @@
 package com.visionary.visionary.service;
 
 import com.visionary.visionary.controller.error.InvalidTimeException;
+import com.visionary.visionary.controller.filter.EventFilter;
 import com.visionary.visionary.controller.param.ReportReason;
 import com.visionary.visionary.domain.Event;
 import com.visionary.visionary.domain.SavedEvent;
 import com.visionary.visionary.domain.User;
 import com.visionary.visionary.repository.EventRepository;
+import com.visionary.visionary.repository.EventSpecifications;
 import com.visionary.visionary.repository.SavedEventRepository;
-import com.visionary.visionary.repository.UserRepository;
 import com.visionary.visionary.service.error.NotFoundException;
 import com.visionary.visionary.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +41,8 @@ public class EventService {
         throw new NotFoundException();
     }
 
-    public List<Event> getEvents(Pageable pageable) {
-        return eventRepository.findAll(pageable).getContent();
+    public Page<Event> getEvents(EventFilter filters, Pageable pageable) {
+        return eventRepository.findAll(EventSpecifications.filters(filters), pageable);
     }
 
     public Event update(Event event) {
@@ -64,7 +66,7 @@ public class EventService {
         SavedEvent savedEvent = new SavedEvent();
         savedEvent.setCreatedAt(Date.from(Instant.now()));
         savedEvent.setEventId(event);
-        savedEvent.setCreatedBy(user);
+        savedEvent.setCreatedBy(user.getId());
         savedEventRepository.save(savedEvent);
         event.setSavedCount(savedEventRepository.countByEventId(event.getId()));
         eventRepository.save(event);
@@ -74,7 +76,7 @@ public class EventService {
     public void unSave(UUID eventId) {
         Event event = getById(eventId);
         User user = userService.getCurrentUser();
-       Optional<SavedEvent> savedEvent = savedEventRepository.findByUserIdAndEventId(user.getId(),eventId);
+       Optional<SavedEvent> savedEvent = savedEventRepository.findBycreatedByAndEventId(user.getId(),eventId);
         if (!savedEvent.isPresent()) {
            return;
         }
@@ -88,7 +90,7 @@ public class EventService {
         User user = userService.getCurrentUser();
         if (Objects.nonNull(user)) {
             Optional<SavedEvent> savedEvent = savedEventRepository
-                    .findByUserIdAndEventId(user.getId(), eventId);
+                    .findBycreatedByAndEventId(user.getId(), eventId);
             return savedEvent.isPresent();
         }
         return false;

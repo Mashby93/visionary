@@ -1,8 +1,8 @@
 package com.visionary.visionary.domain;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.springframework.data.annotation.CreatedBy;
+
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -10,15 +10,16 @@ import java.util.UUID;
 
 @MappedSuperclass
 public abstract class Auditable extends Identifiable {
-    private User createdBy;
+    @Column(name = "created_by")
+    private UUID createdBy;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = Date.from(Instant.now());
 
-    public User getCreatedBy() {
+    public UUID getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(UUID createdBy) {
         this.createdBy = createdBy;
     }
 

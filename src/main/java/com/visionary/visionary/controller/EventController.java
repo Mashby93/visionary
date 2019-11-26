@@ -1,11 +1,13 @@
 package com.visionary.visionary.controller;
 
+import com.visionary.visionary.controller.filter.EventFilter;
 import com.visionary.visionary.controller.pagination.Pagination;
 import com.visionary.visionary.controller.param.ReportReason;
 import com.visionary.visionary.mapper.EventMapper;
 import com.visionary.visionary.model.EventDto;
 import com.visionary.visionary.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/events")
 public class EventController {
     private final EventService eventService;
     private final EventMapper eventMapper;
@@ -28,16 +31,16 @@ public class EventController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/")
-    public List<EventDto> getEvents(Pagination pageable) {
-        return eventService.getEvents(pageable.convert(defaultSort))
+    @GetMapping("/public")
+    public List<EventDto> getEvents(@RequestBody EventFilter filters, Pagination pageable) {
+        return eventService.getEvents(filters,pageable.convert(defaultSort))
                 .stream()
                 .map(eventMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/")
+    @PatchMapping("")
     public void updateEvent(EventDto eventDto) {
         eventService.update(eventMapper.toEntity(eventDto));
     }
@@ -53,4 +56,11 @@ public class EventController {
     public void cancelEvent(@PathVariable("eventId") UUID id, @RequestBody String cancelReason) {
         eventService.cancel(id, cancelReason);
     }
+
+    @PostMapping("/{eventId}/save")
+    @ResponseStatus(HttpStatus.OK)
+    public void saveEvent(@PathVariable("eventId") UUID id) {
+        eventService.save(id);
+    }
+
 }
