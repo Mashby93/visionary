@@ -6,11 +6,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Objects;
 
 public class Pagination {
     @Max(value = 50)
+    @Positive
     private Integer size = 20;
+    @PositiveOrZero
     private Integer page = 0;
     private Sort sort;
 
