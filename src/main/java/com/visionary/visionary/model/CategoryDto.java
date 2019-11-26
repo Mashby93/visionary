@@ -1,14 +1,16 @@
 package com.visionary.visionary.model;
 
+import java.util.UUID;
+
 public class CategoryDto {
-    private String id;
+    private UUID id;
     private String display;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

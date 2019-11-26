@@ -1,23 +1,16 @@
 package com.visionary.visionary.domain;
 
+import javax.persistence.Entity;
 import java.util.TimeZone;
 
-public class User {
-    private String id;
+@Entity
+public class User extends Identifiable{
     private String firstName;
     private String lastName;
     private String emailAddress;
     private String password;
     private Double averageReview;
     private Boolean verified;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;

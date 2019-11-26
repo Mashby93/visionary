@@ -1,7 +1,9 @@
 package com.visionary.visionary.model;
 
+import java.util.UUID;
+
 public class EventDto {
-    private String id;
+    private UUID id;
     private PublicUserProfileDto userProfile;
     private String address;
     private String title;
@@ -13,11 +15,11 @@ public class EventDto {
     private Long savedCount;
     private Boolean saved;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

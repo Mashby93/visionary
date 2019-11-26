@@ -7,6 +7,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class CategoryService {
     private final CategoryRepository categoryRepository;
@@ -15,7 +16,7 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category getById(String id) {
+    public Category getById(UUID id) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()) {
             return category.get();

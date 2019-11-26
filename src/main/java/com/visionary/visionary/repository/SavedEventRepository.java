@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface SavedEventRepository extends CrudRepository<SavedEvent, String>, CustomSavedEventRepository {
-    long countByEventId(String userId);
+public interface SavedEventRepository extends CrudRepository<SavedEvent, UUID>, CustomSavedEventRepository {
+    long countByEventId(UUID userId);
 
-    Optional<SavedEvent> findByUserIdAndEventId(String userId, String eventId);
-    List<SavedEvent> findByEventId(String eventId);
+    Optional<SavedEvent> findByUserIdAndEventId(UUID userId, UUID eventId);
+    List<SavedEvent> findByEventId(UUID eventId);
 }

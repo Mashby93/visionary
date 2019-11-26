@@ -1,5 +1,6 @@
 package com.visionary.visionary.mapper;
 
+import com.visionary.visionary.config.Constants;
 import com.visionary.visionary.controller.error.InvalidTimeException;
 import com.visionary.visionary.domain.Category;
 import com.visionary.visionary.domain.Event;
@@ -24,7 +25,6 @@ public class EventMapper {
     private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
     private final UserMapper userMapper;
-    private final DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.FULL);
 
     @Autowired
     public EventMapper(EventService eventService, ModelMapper modelMapper, CategoryMapper categoryMapper,
@@ -42,7 +42,7 @@ public class EventMapper {
         dto.setUserProfile(userMapper.publicUserProfileDto(event.getUser()));
         dto.setStartTime(event.getStartTime().toString());
         dto.setEndTime(event.getEndTime().toString());
-        dto.setCategoryDto(categoryMapper.toDto(categoryService.getById(event.getCategoryId())));
+        dto.setCategoryDto(categoryMapper.toDto(event.getCategoryId()));
         dto.setSaved(eventService.isSaved(event.getId()));
         dto.setSavedCount(event.getSavedCount());
         return dto;
@@ -55,16 +55,16 @@ public class EventMapper {
             Event oldEvent = eventService.getById(eventDto.getId());
             event.setUser(oldEvent.getUser());
             event.setSavedCount(oldEvent.getSavedCount());
-            if (!event.getAddress().equalsIgnoreCase(oldEvent.getAddress())) {
+            if (!event.getLocation().getAddress().equalsIgnoreCase(oldEvent.getLocation().getAddress())) {
                 // calculate lat/long
             }
             if (Objects.nonNull(eventDto.getCategoryDto()) &&
                     !oldEvent.getCategoryId().equals(eventDto.getCategoryDto().getId())) {
-                event.setCategoryId(categoryService.getById(eventDto.getCategoryDto().getId()).getId());
+                event.setCategoryId(categoryService.getById(eventDto.getCategoryDto().getId()));
             }
             try {
-                event.setStartTime(dateFormat.parse(eventDto.getStartTime()));
-                event.setEndTime(dateFormat.parse(eventDto.getEndTime()));
+                event.setStartTime(Constants.DATE_FORMAT.parse(eventDto.getStartTime()));
+                event.setEndTime(Constants.DATE_FORMAT.parse(eventDto.getEndTime()));
             } catch (ParseException parseException) {
                 throw new InvalidTimeException("Invalid start time or end time format");
             }

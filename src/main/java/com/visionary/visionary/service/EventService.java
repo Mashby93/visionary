@@ -1,6 +1,7 @@
 package com.visionary.visionary.service;
 
 import com.visionary.visionary.controller.error.InvalidTimeException;
+import com.visionary.visionary.controller.param.ReportReason;
 import com.visionary.visionary.domain.Event;
 import com.visionary.visionary.domain.SavedEvent;
 import com.visionary.visionary.domain.User;
@@ -30,7 +31,7 @@ public class EventService {
         this.userService = userService;
     }
 
-    public Event getById(String id) {
+    public Event getById(UUID id) {
         Optional<Event> event = eventRepository.findById(id);
         if (event.isPresent()) {
             return event.get();
@@ -57,20 +58,20 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public void save(String eventId) {
+    public void save(UUID eventId) {
         User user = userService.getCurrentUser();
         Event event = getById(eventId);
         SavedEvent savedEvent = new SavedEvent();
         savedEvent.setCreatedAt(Date.from(Instant.now()));
-        savedEvent.setEventId(event.getId());
-        savedEvent.setUserId(user.getId());
+        savedEvent.setEventId(event);
+        savedEvent.setCreatedBy(user);
         savedEventRepository.save(savedEvent);
         event.setSavedCount(savedEventRepository.countByEventId(event.getId()));
         eventRepository.save(event);
         CalendarService.updateCalendar(new LinkedList<>(), event);
     }
 
-    public void unSave(String eventId) {
+    public void unSave(UUID eventId) {
         Event event = getById(eventId);
         User user = userService.getCurrentUser();
        Optional<SavedEvent> savedEvent = savedEventRepository.findByUserIdAndEventId(user.getId(),eventId);
@@ -83,7 +84,7 @@ public class EventService {
         CalendarService.removeFromCalendar(new LinkedList<>(), eventId);
     }
 
-    public Boolean isSaved(String eventId) {
+    public Boolean isSaved(UUID eventId) {
         User user = userService.getCurrentUser();
         if (Objects.nonNull(user)) {
             Optional<SavedEvent> savedEvent = savedEventRepository
@@ -93,7 +94,11 @@ public class EventService {
         return false;
     }
 
-    public void cancel(String eventId, String reason) {
+    public void report(UUID eventId, ReportReason reportReason) {
+        Event event = getById(eventId);
+    }
+
+    public void cancel(UUID eventId, String reason) {
         Event event = getById(eventId);
         eventRepository.delete(event);
         savedEventRepository.cancelSavedEvent(eventId)

@@ -1,51 +1,29 @@
 package com.visionary.visionary.domain;
 
+import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
-public class Event {
-    private String id;
-    private String address;
-    private Double latitude;
-    private Double longitude;
+@Entity
+public class Event extends Identifiable{
     private String title;
     private String description;
-    private String categoryId;
+    @OneToOne
+    @Column(name = "category_id")
+    private Category categoryId;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_time")
     private Date startTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "end_time")
     private Date endTime;
+    @OneToMany
+    @Column(name = "user_id")
     private User user;
     private Long savedCount;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+    @Embedded
+    private Location location;
+    private Boolean cancelled = false;
 
     public String getTitle() {
         return title;
@@ -63,12 +41,28 @@ public class Event {
         this.description = description;
     }
 
-    public String getCategoryId() {
+    public Category getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Category categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Boolean getCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(Boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public User getUser() {

@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class CustomSavedEventRepositoryImpl implements CustomSavedEventRepository{
@@ -17,7 +18,7 @@ public class CustomSavedEventRepositoryImpl implements CustomSavedEventRepositor
         this.dataSource = dataSource;
     }
 
-    public List<User> cancelSavedEvent(String eventId) {
+    public List<User> cancelSavedEvent(UUID eventId) {
         String getUsersQuery = "Select * from user u join saved_event se on u.id = se.user_id";
         String cancelAll = "Update saved_event set cancelled = true where event_id = ";
         return new LinkedList<>();

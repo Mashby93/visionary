@@ -1,17 +1,19 @@
 package com.visionary.visionary.model;
 
+import java.util.UUID;
+
 public class PublicUserProfileDto {
-    private String id;
+    private UUID id;
     private String firstName;
     private String lastName;
     private Boolean verified;
     private Double averageUserReview;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

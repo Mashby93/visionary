@@ -7,6 +7,7 @@ import com.visionary.visionary.util.ValidationUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -28,7 +29,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getById(String id) {
+    public User getById(UUID id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return user.get();
@@ -36,7 +37,7 @@ public class UserService {
         throw new NotFoundException();
     }
 
-    public User updateVerification(String id, Boolean valid) {
+    public User updateVerification(UUID id, Boolean valid) {
         User user = getById(id);
         user.setVerified(valid);
         return userRepository.save(user);
