@@ -1,5 +1,6 @@
 package com.visionary.visionary.mapper;
 
+import com.fasterxml.uuid.Generators;
 import com.visionary.visionary.domain.User;
 import com.visionary.visionary.model.PrivateUserProfileDto;
 import com.visionary.visionary.model.PublicUserProfileDto;
@@ -37,6 +38,8 @@ public class UserMapper {
             User oldUser = userService.getById(user.getId());
             user.setVerified(oldUser.getVerified());
             user.setAverageReview(oldUser.getAverageReview());
+        } else {
+            user.setId(Generators.timeBasedGenerator().generate());
         }
         return user;
     }

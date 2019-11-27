@@ -1,10 +1,22 @@
 package com.visionary.visionary.util;
 
+import java.util.Objects;
+
 public class ValidationUtil {
-    private static void assertTrue(Boolean status, RuntimeException instance) {
+    public static void assertTrue(Boolean status, RuntimeException instance) {
         if (!status) {
             throw instance;
         }
+    }
+
+    public static void assertFalse(Boolean status, RuntimeException instance) {
+        if (status) {
+            throw instance;
+        }
+    }
+
+    public static void assertEquals(Object lhs, Object rhs, RuntimeException exception) {
+        assertTrue(lhs.equals(rhs), exception);
     }
 
     public static void assertNoVulgarity(String text) {
@@ -15,8 +27,19 @@ public class ValidationUtil {
         assertTrue(validEmail(email), new IllegalArgumentException());
     }
 
+    public static void assertNotNull(Object obj, RuntimeException exception) {
+        assertTrue(Objects.nonNull(obj), exception);
+    }
+
     public static boolean noVulgarity(String text) {
         return true;
     }
-    public static boolean validEmail(String email) {return true;}
+
+    public static boolean validEmail(String email) {
+        if (!email.contains("@")) {
+            return false;
+        }
+        return true;
+    }
+
 }

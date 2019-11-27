@@ -1,15 +1,18 @@
 package com.visionary.visionary.service;
 
+import com.visionary.visionary.controller.error.InsufficientAccountPriviledgeException;
 import com.visionary.visionary.controller.error.InvalidTimeException;
 import com.visionary.visionary.controller.filter.EventFilter;
 import com.visionary.visionary.controller.param.ReportReason;
 import com.visionary.visionary.domain.Event;
 import com.visionary.visionary.domain.SavedEvent;
 import com.visionary.visionary.domain.User;
+import com.visionary.visionary.model.UserPrincipal;
 import com.visionary.visionary.repository.EventRepository;
 import com.visionary.visionary.repository.EventSpecifications;
 import com.visionary.visionary.repository.SavedEventRepository;
 import com.visionary.visionary.service.error.NotFoundException;
+import com.visionary.visionary.util.SecurityUtil;
 import com.visionary.visionary.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +49,16 @@ public class EventService {
     }
 
     public Event update(Event event) {
+        if (Objects.nonNull(event.getUser())) {
+            ValidationUtil.assertTrue(SecurityUtil
+                    .isCurrentUserOrHigherAuthority(event.getUser()),
+                    new InsufficientAccountPriviledgeException());
+        } else {
+            User user = userService.getById(SecurityUtil.getCurrentUser().getId());
+            event.setUser(user);
+            event.setCreatedBy(user.getId());
+        }
+
         if (!(ValidationUtil.noVulgarity(event.getTitle()) && ValidationUtil.noVulgarity(event.getDescription()))) {
             throw new IllegalArgumentException("Description or title contains inappropriate language");
         }
@@ -60,34 +73,38 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public void save(UUID eventId) {
-        User user = userService.getCurrentUser();
-        Event event = getById(eventId);
+    private void save(Event event, UserPrincipal user) {
         SavedEvent savedEvent = new SavedEvent();
         savedEvent.setCreatedAt(Date.from(Instant.now()));
         savedEvent.setEventId(event);
         savedEvent.setCreatedBy(user.getId());
         savedEventRepository.save(savedEvent);
-        event.setSavedCount(savedEventRepository.countByEventId(event.getId()));
-        eventRepository.save(event);
         CalendarService.updateCalendar(new LinkedList<>(), event);
     }
 
-    public void unSave(UUID eventId) {
+    public void changeSaveStatus(UUID eventId) {
         Event event = getById(eventId);
-        User user = userService.getCurrentUser();
-       Optional<SavedEvent> savedEvent = savedEventRepository.findBycreatedByAndEventId(user.getId(),eventId);
-        if (!savedEvent.isPresent()) {
-           return;
+        UserPrincipal user = SecurityUtil.getCurrentUser();
+        Optional<SavedEvent> savedEvent = savedEventRepository
+                .findBycreatedByAndEventId(user.getId(),eventId);
+        if (savedEvent.isPresent()) {
+            unSave(savedEvent.get(), user);
+        } else {
+            save(event,user);
         }
-        savedEventRepository.deleteById(savedEvent.get().getId());
         event.setSavedCount(savedEventRepository.countByEventId(event.getId()));
         eventRepository.save(event);
-        CalendarService.removeFromCalendar(new LinkedList<>(), eventId);
+    }
+
+    private void unSave(SavedEvent savedEvent, UserPrincipal user) {
+        ValidationUtil.assertEquals(user.getId(),savedEvent.getCreatedBy(),
+                new InsufficientAccountPriviledgeException());
+        savedEventRepository.deleteById(savedEvent.getId());
+        CalendarService.removeFromCalendar(new LinkedList<>(), savedEvent.getId());
     }
 
     public Boolean isSaved(UUID eventId) {
-        User user = userService.getCurrentUser();
+        UserPrincipal user = SecurityUtil.getCurrentUser();
         if (Objects.nonNull(user)) {
             Optional<SavedEvent> savedEvent = savedEventRepository
                     .findBycreatedByAndEventId(user.getId(), eventId);

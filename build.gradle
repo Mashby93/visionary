@@ -20,6 +20,16 @@ dependencies {
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.5'
 	implementation group: 'com.fasterxml.uuid', name: 'java-uuid-generator', version: '3.1.4'
 	implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.2.1.RELEASE'
+	implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.2.1.RELEASE'
+	implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.2.1.RELEASE'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.7'
+
+
+
+
 
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

@@ -1,5 +1,6 @@
 package com.visionary.visionary.mapper;
 
+import com.fasterxml.uuid.Generators;
 import com.visionary.visionary.domain.Category;
 import com.visionary.visionary.model.CategoryDto;
 import com.visionary.visionary.service.CategoryService;
@@ -29,6 +30,8 @@ public class CategoryMapper {
         if (Objects.nonNull(category.getId())) {
             Category oldCategory = categoryService.getById(category.getId());
             category.setDisplay(oldCategory.getDisplay());
+        } else {
+            category.setId(Generators.timeBasedGenerator().generate());
         }
         return category;
     }

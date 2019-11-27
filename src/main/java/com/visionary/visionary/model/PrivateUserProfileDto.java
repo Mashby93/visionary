@@ -1,22 +1,13 @@
 package com.visionary.visionary.model;
 
 public class PrivateUserProfileDto extends PublicUserProfileDto {
-    private String emailAddress;
-    private String password;
+    private Credentials credentials;
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public Credentials getCredentials() {
+        return credentials;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
     }
 }

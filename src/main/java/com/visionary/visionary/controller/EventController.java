@@ -31,7 +31,7 @@ public class EventController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/public")
+    @GetMapping("")
     public List<EventDto> getEvents(@RequestBody EventFilter filters, Pagination pageable) {
         return eventService.getEvents(filters,pageable.convert(defaultSort))
                 .stream()
@@ -57,10 +57,10 @@ public class EventController {
         eventService.cancel(id, cancelReason);
     }
 
-    @PostMapping("/{eventId}/save")
+    @PatchMapping("/{eventId}/saveStatus")
     @ResponseStatus(HttpStatus.OK)
     public void saveEvent(@PathVariable("eventId") UUID id) {
-        eventService.save(id);
+        eventService.changeSaveStatus(id);
     }
 
 }

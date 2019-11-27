@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-public class Event extends Identifiable{
+public class Event extends Auditable{
     private String title;
     private String description;
     @OneToOne

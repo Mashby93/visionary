@@ -1,5 +1,8 @@
 package com.visionary.visionary.controller.param;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class ReportReason {
     private Reason reason;
     private String details;

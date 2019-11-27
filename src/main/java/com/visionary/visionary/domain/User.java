@@ -1,16 +1,29 @@
 package com.visionary.visionary.domain;
 
+import com.visionary.visionary.config.security.Roles;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Entity;
+import java.nio.file.attribute.UserPrincipal;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.TimeZone;
 
 @Entity
-public class User extends Identifiable{
+public class User extends Identifiable {
     private String firstName;
     private String lastName;
     private String emailAddress;
     private String password;
     private Double averageReview;
     private Boolean verified;
+    private Boolean locked;
+    private Date lastLogin;
+    private Boolean banned;
+    private Date banExpiration;
+    private Roles roles;
 
     public String getFirstName() {
         return firstName;
@@ -58,5 +71,45 @@ public class User extends Identifiable{
 
     public void setVerified(Boolean verified) {
         this.verified = verified;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Boolean getBanned() {
+        return banned;
+    }
+
+    public void setBanned(Boolean banned) {
+        this.banned = banned;
+    }
+
+    public Date getBanExpiration() {
+        return banExpiration;
+    }
+
+    public void setBanExpiration(Date banExpiration) {
+        this.banExpiration = banExpiration;
+    }
+
+    public Roles getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Roles roles) {
+        this.roles = roles;
     }
 }

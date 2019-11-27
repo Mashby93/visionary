@@ -1,5 +1,6 @@
 package com.visionary.visionary.mapper;
 
+import com.fasterxml.uuid.Generators;
 import com.visionary.visionary.config.Constants;
 import com.visionary.visionary.controller.error.InvalidTimeException;
 import com.visionary.visionary.domain.Category;
@@ -68,6 +69,8 @@ public class EventMapper {
             } catch (ParseException parseException) {
                 throw new InvalidTimeException("Invalid start time or end time format");
             }
+        } else {
+            event.setId(Generators.timeBasedGenerator().generate());
         }
         return event;
     }

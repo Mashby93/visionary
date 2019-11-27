@@ -1,13 +1,16 @@
 package com.visionary.visionary.model;
 
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 public class PublicUserProfileDto {
     private UUID id;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
-    private Boolean verified;
-    private Double averageUserReview;
+    private Boolean verified = false;
+    private Double averageUserReview = 0.0;
 
     public UUID getId() {
         return id;

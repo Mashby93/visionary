@@ -8,7 +8,6 @@ public class EventDto {
     private String address;
     private String title;
     private String description;
-    private String date;
     private String startTime;
     private String endTime;
     private CategoryDto categoryDto;
@@ -45,14 +44,6 @@ public class EventDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getStartTime() {
