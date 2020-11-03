@@ -1,4 +1,4 @@
 package com.visionary.visionary.model;
 
-public class UserDto {
+public class DateRange {
 }

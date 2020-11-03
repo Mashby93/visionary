@@ -1,12 +1,7 @@
 package com.visionary.visionary.repository;
 
 import com.visionary.visionary.domain.Event;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
-
-@Repository
-public interface EventRepository extends PagingAndSortingRepository<Event, UUID>, JpaSpecificationExecutor<Event> {
+public interface EventRepository extends BaseRepository<Event> {
 }
