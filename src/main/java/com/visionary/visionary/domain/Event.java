@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "plot")
+@Table(name = "event")
 public class Event extends AbstractEntity {
     private List<DateRange> dates;
 
